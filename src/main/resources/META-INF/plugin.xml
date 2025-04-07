@@ -1,0 +1,43 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
+    <id>com.bino.intellij-kotlin-bsp</id>
+
+    <!-- Public plugin name should be written in Title Case.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
+    <name>Kotlin BSP</name>
+
+    <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
+    <vendor email="" url="http://localhost">Dummy</vendor>
+
+    <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
+         Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
+<!--    <description></description>-->
+
+    <!-- Product and plugin compatibility requirements.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.java</depends>
+    <depends>org.jetbrains.plugins.gradle</depends>
+    <depends>org.jetbrains.kotlin</depends>
+    <depends>com.intellij.gradle</depends>
+    <depends>com.intellij.modules.externalSystem</depends>
+<!--    <depends>org.jetbrains.plugins.gradle</depends>-->
+
+    <!-- Extension points defined by the plugin.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+    <extensions defaultExtensionNs="com.intellij">
+<!--        <externalProjectDataService implementation="com.bino.intellijkotlinbsp.data.BspProjectDataService"/>-->
+        <applicationService serviceImplementation="com.bino.intellijkotlinbsp.settings.BspSystemSettings"/>
+        <projectService serviceImplementation="com.bino.intellijkotlinbsp.settings.BspSettings"/>
+        <projectService serviceImplementation="com.bino.intellijkotlinbsp.settings.BspLocalSettings"/>
+
+        <projectImportProvider implementation="com.bino.intellijkotlinbsp.project.importing.BspProjectImportProvider"/>
+        <projectImportBuilder implementation="com.bino.intellijkotlinbsp.project.importing.BspProjectImportBuilder"/>
+
+        <projectOpenProcessor implementation="com.bino.intellijkotlinbsp.project.importing.BspProjectOpenProcessor"/>
+
+        <externalSystemManager implementation="com.bino.intellijkotlinbsp.project.BspExternalSystemManager" />
+    </extensions>
+</idea-plugin>

@@ -1,0 +1,20 @@
+<ivy-module version="2.0">
+  <info organisation="bundledPlugin" module="org.jetbrains.plugins.gradle" revision="IC-243.24978.46"/>
+  <configurations>
+    <conf name="default" visibility="public"/>
+  </configurations>
+  <publications>
+    <artifact name="gradle-jps" ext="jar" conf="default" url="plugins/gradle-java/lib"/>
+    <artifact name="gradle-java" ext="jar" conf="default" url="plugins/gradle-java/lib"/>
+  </publications>
+  <dependencies>
+    <dependency org="bundledPlugin" name="com.intellij.java" rev="IC-243.24978.46"/>
+    <dependency org="bundledPlugin" name="com.intellij.gradle" rev="IC-243.24978.46"/>
+    <dependency org="bundledPlugin" name="org.jetbrains.idea.maven" rev="IC-243.24978.46"/>
+    <dependency org="bundledPlugin" name="Coverage" rev="IC-243.24978.46"/>
+    <dependency org="bundledPlugin" name="org.intellij.groovy" rev="IC-243.24978.46"/>
+    <dependency org="bundledPlugin" name="com.intellij.properties" rev="IC-243.24978.46"/>
+    <dependency org="bundledPlugin" name="org.toml.lang" rev="IC-243.24978.46"/>
+    <dependency org="bundledPlugin" name="com.jetbrains.performancePlugin" rev="IC-243.24978.46"/>
+  </dependencies>
+</ivy-module>

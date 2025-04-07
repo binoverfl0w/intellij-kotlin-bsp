@@ -1,0 +1,17 @@
+<ivy-module version="2.0">
+  <info organisation="bundledPlugin" module="Coverage" revision="IC-243.24978.46"/>
+  <configurations>
+    <conf name="default" visibility="public"/>
+  </configurations>
+  <publications>
+    <artifact name="java-coverage" ext="jar" conf="default" url="plugins/java-coverage/lib"/>
+    <artifact name="jacoco" ext="jar" conf="default" url="plugins/java-coverage/lib"/>
+    <artifact name="java-coverage-rt" ext="jar" conf="default" url="plugins/java-coverage/lib"/>
+  </publications>
+  <dependencies>
+    <dependency org="bundledPlugin" name="TestNG-J" rev="IC-243.24978.46"/>
+    <dependency org="bundledPlugin" name="JUnit" rev="IC-243.24978.46"/>
+    <dependency org="bundledModule" name="intellij.platform.coverage" rev="IC-243.24978.46"/>
+    <dependency org="bundledPlugin" name="com.intellij.java" rev="IC-243.24978.46"/>
+  </dependencies>
+</ivy-module>
