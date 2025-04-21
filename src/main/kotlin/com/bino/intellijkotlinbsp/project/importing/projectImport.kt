@@ -38,8 +38,8 @@ import com.intellij.packaging.artifacts.ModifiableArtifactModel
 import com.intellij.projectImport.ProjectImportBuilder
 import com.intellij.projectImport.ProjectImportProvider
 import com.intellij.projectImport.ProjectOpenProcessor
-import org.jetbrains.plugins.gradle.service.project.open.GradleProjectOpenProcessor
-import org.jetbrains.plugins.gradle.service.project.wizard.JavaGradleProjectImportProvider
+//import org.jetbrains.plugins.gradle.service.project.open.GradleProjectOpenProcessor
+
 import java.io.File
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -122,7 +122,7 @@ class BspProjectImportBuilder : AbstractExternalProjectImportBuilder<ImportFromB
             .getInstance()
             .refreshAndFindFileByPath(projectFilePath)
             ?.let {
-                BspOpenProjectProvider().linkToExistingProject(it, project)
+                BspOpenProjectProvider.linkToExistingProject(it, project)
             }
             ?: {
                 val shortPath = FileUtil.getLocationRelativeToUserHome(FileUtil.toSystemIndependentName(projectFilePath), false)
@@ -136,7 +136,7 @@ class BspProjectImportBuilder : AbstractExternalProjectImportBuilder<ImportFromB
     }
 }
 
-class BspOpenProjectProvider : AbstractOpenProjectProvider() {
+object BspOpenProjectProvider : AbstractOpenProjectProvider() {
     override val systemId: ProjectSystemId = BSP.PROJECT_SYSTEM_ID
 
     override fun isProjectFile(file: VirtualFile): Boolean = canOpenProject(file)
@@ -241,7 +241,7 @@ class BspProjectImportProvider(private val builder: BspProjectImportBuilder) : A
 
     override fun canImport(fileOrDirectory: VirtualFile, project: Project?): Boolean =
         canOpenProjectFile(fileOrDirectory) ||
-                GradleProjectOpenProcessor().canOpenProject(fileOrDirectory)
+                BspConfigSteps.canOpenGradleProject(fileOrDirectory)
 
     override fun createSteps(context: WizardContext): Array<ModuleWizardStep> {
         builder.reset()
@@ -270,7 +270,7 @@ class BspProjectOpenProcessor : ProjectOpenProcessor() {
         projectToClose: Project?,
         forceOpenInNewFrame: Boolean,
     ): Project = runUnderModalProgressIfIsEdt {
-        BspOpenProjectProvider().openProject(virtualFile, projectToClose, forceOpenInNewFrame)!!
+        BspOpenProjectProvider.openProject(virtualFile, projectToClose, forceOpenInNewFrame)!!
     }
 
 }

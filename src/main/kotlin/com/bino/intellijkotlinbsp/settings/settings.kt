@@ -21,7 +21,9 @@ import com.intellij.openapi.util.io.toCanonicalPath
 import com.intellij.util.messages.Topic
 import com.intellij.util.xmlb.Converter
 import com.intellij.util.xmlb.annotations.OptionTag
+import com.intellij.util.xmlb.annotations.XCollection
 import java.beans.BeanProperty
+import java.io.Serializable
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.*
@@ -65,7 +67,6 @@ class BspProjectSettings : ExternalProjectSettings() {
         data object NoPreImport : PreImportConfig()
         data object AutoPreImport : PreImportConfig()
 
-
         class PreImportConfigConverter : Converter<PreImportConfig>() {
             override fun fromString(value: String): PreImportConfig? {
                 return when (value) {
@@ -100,7 +101,7 @@ class BspProjectSettings : ExternalProjectSettings() {
             override fun toString(value: BspServerConfig): String {
                 return when(value) {
                     AutoConfig -> "AutoConfig"
-                    is BspConfigFile -> "BspConfigFile:${value}"
+                    is BspConfigFile -> "BspConfigFile:${value.path}"
                 }
             }
         }
@@ -178,6 +179,7 @@ class BspSettings(project: Project): AbstractExternalSystemSettings<BspSettings,
         class State : AbstractExternalSystemSettings.State<BspProjectSettings> {
             private val projectSettings = TreeSet<BspProjectSettings>()
 
+            @XCollection(style = XCollection.Style.v1, elementTypes = [BspProjectSettings::class])
             override fun getLinkedExternalProjectsSettings(): MutableSet<BspProjectSettings> = projectSettings
             override fun setLinkedExternalProjectsSettings(settings: MutableSet<BspProjectSettings>) {
 //                projectSettings.clear()
@@ -192,7 +194,7 @@ class BspSettings(project: Project): AbstractExternalSystemSettings<BspSettings,
     }
 }
 
-@State(name = "BspSettings", storages = [Storage("bsp.settings.xml")], reportStatistic = true, category = SettingsCategory.TOOLS)
+@State(name = "BspSystemSettings", storages = [Storage("bsp.settings.xml")], reportStatistic = true, category = SettingsCategory.TOOLS)
 class BspSystemSettings : PersistentStateComponent<BspSystemSettings.Companion.State> {
 
     @get:BeanProperty
@@ -231,13 +233,13 @@ class BspLocalSettings(project: Project) : AbstractExternalSystemLocalSettings<B
 
 class BspLocalSettingsState : AbstractExternalSystemLocalSettings.State()
 
-class BspExecutionSettings(
-    private val basePath: Path,
-    private val traceBsp: Boolean,
-    private val runPreImportTask: Boolean,
-    private val preImportTask: BspProjectSettings.Companion.PreImportConfig,
-    private val config: BspProjectSettings.Companion.BspServerConfig,
-) : ExternalSystemExecutionSettings() {
+data class BspExecutionSettings(
+    val basePath: Path,
+    val traceBsp: Boolean,
+    val runPreImportTask: Boolean,
+    val preImportTask: BspProjectSettings.Companion.PreImportConfig,
+    val config: BspProjectSettings.Companion.BspServerConfig,
+) : ExternalSystemExecutionSettings(), Serializable {
 
     companion object {
         fun executionSettingsFor(project: Project?, basePath: Path): BspExecutionSettings {
@@ -250,7 +252,11 @@ class BspExecutionSettings(
             val serverConfig = linkedSettings?.serverConfig ?: BspProjectSettings.Companion.AutoConfig
 
             return BspExecutionSettings(
-                basePath, bspTraceLog, runPreImportTask, preImportConfig, serverConfig
+                basePath,
+                bspTraceLog,
+                runPreImportTask,
+                preImportConfig,
+                serverConfig
             )
         }
 
@@ -258,7 +264,11 @@ class BspExecutionSettings(
             val systemSettings = BspSystemSettings.getInstance()
             val defaultProjectSettings = BspProjectSettings()
             return BspExecutionSettings(
-                basePath, systemSettings.state.traceBsp, defaultProjectSettings.runPreImportTask, BspProjectSettings.Companion.AutoPreImport, BspProjectSettings.Companion.AutoConfig
+                basePath,
+                systemSettings.state.traceBsp,
+                defaultProjectSettings.runPreImportTask,
+                BspProjectSettings.Companion.AutoPreImport,
+                BspProjectSettings.Companion.AutoConfig
             )
         }
     }

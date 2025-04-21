@@ -80,7 +80,12 @@ tasks {
 dependencies {
     intellijPlatform {
         intellijIdeaCommunity("2024.3.3")
-        bundledPlugins("com.intellij.java", "com.intellij.gradle", "org.jetbrains.plugins.gradle", "org.jetbrains.kotlin")
+        bundledPlugins(
+            "com.intellij.java",
+//            "com.intellij.gradle",
+//            "org.jetbrains.plugins.gradle",
+            "org.jetbrains.kotlin"
+        )
     }
     implementation("ch.epfl.scala:bsp4j:2.1.0-M4")
     implementation(files("lib/server.jar"))

@@ -19,9 +19,9 @@
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.java</depends>
-    <depends>org.jetbrains.plugins.gradle</depends>
+<!--    <depends>org.jetbrains.plugins.gradle</depends>-->
     <depends>org.jetbrains.kotlin</depends>
-    <depends>com.intellij.gradle</depends>
+<!--    <depends>com.intellij.gradle</depends>-->
     <depends>com.intellij.modules.externalSystem</depends>
 <!--    <depends>org.jetbrains.plugins.gradle</depends>-->
 
@@ -39,5 +39,19 @@
         <projectOpenProcessor implementation="com.bino.intellijkotlinbsp.project.importing.BspProjectOpenProcessor"/>
 
         <externalSystemManager implementation="com.bino.intellijkotlinbsp.project.BspExternalSystemManager" />
+        <externalSystemUnlinkedProjectAware implementation="com.bino.intellijkotlinbsp.project.BspUnlinkedProjectAware" />
+
+        <externalTextProvider implementation="com.bino.intellijkotlinbsp.project.BspTextProvider" />
+
+        <registryKey key="BSP.system.in.process" defaultValue="true" restartRequired="true"
+                     description="Internal, do not change"/>
+
+        <projectConfigurable groupId="build.tools" bundle="messages.KotlinBspBundle"
+                             key="displayname.gradle"
+                             instance="com.bino.intellijkotlinbsp.project.BspExternalSystemConfigurable"/>
+
+        <toolWindow id="BSP" anchor="right" icon="/com/bino/plugins/kotlin/bsp/images/toolWindowBuildServerProtocol.svg"
+                    factoryClass="com.bino.intellijkotlinbsp.ui.BspToolWindowFactory"/>
+
     </extensions>
 </idea-plugin>

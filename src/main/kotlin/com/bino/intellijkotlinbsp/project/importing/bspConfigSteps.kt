@@ -20,6 +20,7 @@ import com.intellij.openapi.projectRoots.SdkTypeId
 import com.intellij.openapi.roots.ui.configuration.JdkComboBox
 import com.intellij.openapi.roots.ui.configuration.projectRoot.ProjectSdksModel
 import com.intellij.openapi.vfs.LocalFileSystem
+import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.ui.TitledSeparator
 import com.intellij.ui.components.JBList
 import com.intellij.uiDesigner.core.GridConstraints
@@ -28,7 +29,6 @@ import com.intellij.util.ui.JBUI
 import com.intellij.util.ui.UI
 import java.nio.file.Path
 import javax.swing.JComponent
-import org.jetbrains.plugins.gradle.service.project.open.canOpenGradleProject
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import javax.swing.DefaultListModel
@@ -95,6 +95,18 @@ object BspConfigSteps  {
             GradleSetup
         } else {
             NoSetup
+        }
+    }
+
+    fun canOpenGradleProject(vFile: VirtualFile): Boolean {
+        val gradleFiles = listOf(
+            "build.gradle",
+            "settings.gradle",
+            "settings.gradle.kts",
+            "build.gradle.kts"
+        )
+        return gradleFiles.any { fileName ->
+            vFile.findChild(fileName) != null
         }
     }
 }

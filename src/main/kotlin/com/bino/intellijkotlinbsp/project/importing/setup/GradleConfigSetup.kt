@@ -1,5 +1,6 @@
 package com.bino.intellijkotlinbsp.project.importing.setup
 
+import com.bino.intellijkotlinbsp.BspBundle
 import com.bino.intellijkotlinbsp.getServerLauncher
 import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.execution.process.OSProcessHandler
@@ -9,7 +10,7 @@ import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.projectRoots.JavaSdk
 import com.intellij.openapi.projectRoots.ProjectJdkTable
 import com.intellij.openapi.projectRoots.Sdk
-import org.jetbrains.plugins.gradle.util.GradleBundle
+//import org.jetbrains.plugins.gradle.util.GradleBundle
 import java.io.BufferedWriter
 import java.io.File
 import java.io.OutputStreamWriter
@@ -141,7 +142,7 @@ class GradleRunner {
         val exitCode = handler.exitCode
         val result = run {
             if (!processEnded)
-                Result.failure<BuildMessages>(ImportCanceledException(GradleBundle.message("gradle.task.cancelled")))
+                Result.failure<BuildMessages>(ImportCanceledException(BspBundle.message("gradle.task.cancelled")))
             else if (exitCode != 0)
                 messages = messages.status(BuildMessages.Companion.Error)
             else if (messages.status == BuildMessages.Companion.Indeterminate)
